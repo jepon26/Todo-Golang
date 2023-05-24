@@ -18,8 +18,6 @@ type PageInfo struct {
 	Todos []List
 }
 
-
-
 func list(w http.ResponseWriter, r *http.Request) {
 
 	data := PageInfo{
