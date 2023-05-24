@@ -8,17 +8,19 @@
     <title>TODO</title>
 </head>
 <body>
+    <!-- Title Section -->
     <h1>{{ .Title }}</h1>
     
-    <ul>
+    <!-- TODO List Section -->
+    <div class="todos">
         {{ range .Todos }}
-            <li{{ if .Finish }} class="finish"{{ end }}>{{ .Object }}</li>
+            <!-- Individual TODO Item -->
+            <p{{ if .Finish }} class="finish"{{ end }}>{{ .Object }}</p>
         {{ end }}
-    </ul>
-    
-    
-    
+    </div>
 
+    <!-- JavaScript Section -->
     <script src="/static/js/index.js" type="text/javascript"></script>
 </body>
 </html>
+

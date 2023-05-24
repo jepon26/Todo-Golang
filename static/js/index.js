@@ -1,7 +1,11 @@
-let objectss = document.getElementsByTagName("li")
+// index.js
 
-for (let i=0; i<objects.length; i++) {
-    objects[i].addEventListener("click", () => {
-    objects[i].classList.toggle("finish")
-    })
-}
+// Get all the TODO items
+let todoItems = document.querySelectorAll('.todos p');
+
+// Add click event listener to each TODO item
+todoItems.forEach(function(item) {
+  item.addEventListener('click', function() {
+    item.classList.toggle('finish');
+  });
+});

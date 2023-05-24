@@ -1,14 +1,16 @@
-body {
-    background-color: orange;
-    color: steelblue;
-    width: 50%;
-    margin: 0 auto;
+/* index.css */
+
+/* Styles for the TODO list container */
+.todos {
+  margin-top: 20px;
 }
 
-ul li {
-    cursor: pointer;
+/* Styles for individual TODO items */
+.todos p {
+  margin: 5px 0;
 }
 
-.finish {
-    text-decoration: line-through;
+.todos p.finish {
+  text-decoration: line-through;
+  color: gray;
 }
