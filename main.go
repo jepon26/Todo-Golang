@@ -1,24 +1,20 @@
 package main
 
 import (
-	"encoding/json"
-	"io"
+	"html/template"
+	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
-	log "github.com/sirupsen/logrus"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-var db, _ = gorm.Open("mysql", "root:root@/todolist?charset=utf8&parseTime=True&loc=Local")
+var tmpl *template.Template
 
-type TodoItemModel struct {
-	Id          int    `gorm:"primary_key"`
-	Description string `json:"description"`
-	Completed   bool   `json:"completed"`
+type Lis struct {
+	object string 
+	finish   bool
 }
+
+
+
 
 func createItem(w http.ResponseWriter, r *http.Request) {
 	description := r.FormValue("description")
