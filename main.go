@@ -8,42 +8,45 @@ import (
 
 var tmpl *template.Template
 
-type Lis struct {
-	object string 
-	finish   bool
+type List struct {
+	object string
+	finish bool
+}
+
+type PageInfo struct {
+	Title string
+	Todos []List
 }
 
 
 
+func list(w http.ResponseWriter, r *http.Request) {
 
-func createItem(w http.ResponseWriter, r *http.Request) {
-	description := r.FormValue("description")
-	log.WithFields(log.Fields{"description": description}).Info("Add new Todo Item. Saving to database.")
-	todo := &TodoItemModel{Description: description, Completed: false}
-	db.Create(&todo)
-	result := db.Last(&todo)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(result.Value)
+	data := PageInfo{
+
+		Title: "Todo List",
+
+		Todos: []List{
+
+			{object: "Wash the dishes", finish: true},
+
+			{object: "Do the homework", finish: false},
+
+			{object: "Listen to music", finish: false},
+		},
+	}
+	tmpl.Execute(w, data)
 }
 
-func StartServer(w http.ResponseWriter, r *http.Request) {
-	log.Info("API is ok")
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `{"alive": true}`)
-}
-
-func init() {
-	log.SetFormatter(&log.TextFormatter{})
-	log.SetReportCaller(true)
-}
 func main() {
-	
 
-	log.Info("Starting Todo API server")
+	mux := http.NewServeMux()
 
-	r := mux.NewRouter()
-	r.HandleFunc("/StartServer", StartServer).Methods("GET")
-	r.HandleFunc("/todo", createItem).Methods("POST")
+	tmpl = template.Must(template.ParseFiles("templates/mark.gohtml"))
 
-	http.ListenAndServe(":8000", r)
+	fs := http.FileServer(http.Dir("./static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	mux.HandleFunc("/list", list)
+
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
